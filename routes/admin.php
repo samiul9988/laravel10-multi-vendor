@@ -10,3 +10,4 @@ Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dash
 
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 Route::post('update/profile', [ProfileController::class, 'updateProfile'])->name('update.profile');
+Route::post('update/profile/password', [ProfileController::class, 'updatePassword'])->name('update.password');
