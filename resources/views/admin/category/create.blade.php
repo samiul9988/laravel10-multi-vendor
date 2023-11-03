@@ -25,12 +25,14 @@
                                     <label>Icon</label>
                                     <div>
                                         <button data-selected-class="btn-danger"
-                                                data-unselected-class="btn-info" class="btn btn-primary" role="iconpicker"></button>
+                                                data-unselected-class="btn-info" name="icon" class="btn btn-primary" role="iconpicker"></button>
+                                        <span class="text-danger">@error ('icon') {{$message}} @enderror</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" class="form-control" name="name" value="">
+                                    <span class="text-danger">@error ('name') {{$message}} @enderror</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputState">Status</label>
@@ -38,6 +40,7 @@
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
+                                    <span class="text-danger">@error ('status') {{$message}} @enderror</span>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Create</button>
                             </form>
