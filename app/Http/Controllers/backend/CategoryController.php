@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Backend;
 use App\DataTables\CategoryDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use function Livewire\Features\SupportFormObjects\all;
 
 
 class CategoryController extends Controller
@@ -84,10 +86,10 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
 
-        $category->icon = $request->icon;
-        $category->name = $request->name;
-        $category->slug = Str::slug($request->name);
-        $category->status = $request->status;
+        $category->icon     = $request->icon;
+        $category->name     = $request->name;
+        $category->slug     = Str::slug($request->name);
+        $category->status   = $request->status;
 
         $category->save();
         return redirect()->route('admin.category.index');
@@ -98,6 +100,22 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $subCategory = SubCategory::where('category_id', $category->id)->count();
+        if ($subCategory > 0 ){
+            return response(['status'=> 'error', 'This Category have sub Category item']);
+        }
+        $category->delete();
+
+        return redirect()->back();
+    }
+
+    public function changeStatus (Request $request){
+
+        $category = Category::findOrFail($request->id);
+        $category->status = $request->status == 'true' ? 1 : 0;
+        $category->save();
+
+        return response(['message' => 'Status Updated Successfuly']);
     }
 }

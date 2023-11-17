@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\backend\SliderController;
+use App\Http\Controllers\backend\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\AdminController;
 
@@ -14,9 +16,24 @@ Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 Route::post('update/profile', [ProfileController::class, 'updateProfile'])->name('update.profile');
 Route::post('update/profile/password', [ProfileController::class, 'updatePassword'])->name('update.password');
 
+//Route::middleware(['web'])->group(function () {
+//    Route::put('admin/category/change-status', 'CategoryController@changeStatus')->name('category.change-status');
+//});
 
-/** Category route */
-Route::resource('category', CategoryController::class);
+
 
 /** slider route */
 Route::resource('slider', SliderController::class);
+
+/** Category route */
+Route::put('change-status', [CategoryController::class, 'changeStatus'])->name('category.change-status');
+Route::resource('category', CategoryController::class);
+
+/** Sub Category route */
+Route::put('sub-category/change-status', [SubCategoryController::class, 'changeStatus'])->name('sub-category.change-status');
+Route::resource('sub-category', SubCategoryController::class);
+
+/** Child Category route */
+Route::put('Child-category/change-status', [ChildCategoryController::class, 'changeStatus'])->name('child-category.change-status');
+Route::get('get-subCategories', [ChildCategoryController::class, 'getSubCategories'])->name('get-subCategories');
+Route::resource('child-category', ChildCategoryController::class);
