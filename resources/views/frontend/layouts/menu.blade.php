@@ -1,5 +1,12 @@
 @php
-    $categories = \App\Models\Category::all();
+    $categories = \App\Models\Category::where('status', 1)
+    ->with(['subCategories'=> function($query){
+        $query->where('status', 1)
+        ->with(['childCategories' => function($query){
+            $query->where('status', 1);
+        }]);
+    }])
+    ->get();
 @endphp
 <nav class="wsus__main_menu d-none d-lg-block">
     <div class="container">
@@ -15,12 +22,14 @@
                             @if(count($category->subCategories) > 0)
                             <ul class="wsus_menu_cat_droapdown">
                                 @foreach($category->subCategories as $subCategory)
-                                <li><a href="#">{{$subCategory->name}}<i class="fas fa-angle-right"></i></a>
+                                <li><a href="#">{{$subCategory->name}}<i class="{{count($subCategory->childCategories) > 0 ? 'fas fa-angle-right' : ''}}"></i></a>
+                                    @if(count($subCategory->childCategories) > 0)
                                     <ul class="wsus__sub_category">
                                         @foreach($subCategory->childCategories as $childCategory)
                                         <li><a href="#">{{$childCategory->name}}</a> </li>
                                         @endforeach
                                     </ul>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
