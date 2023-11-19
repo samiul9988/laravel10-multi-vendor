@@ -40,7 +40,7 @@
                     let csrfToken = $('meta[name="csrf-token"]').attr('content'); // Extract CSRF token
 
                     $.ajax({
-                        url: "{{ route('admin.category.change-status') }}", // Use the named route
+                        url: "{{ route('admin.brand.change-status') }}", // Use the named route
                         method: 'PUT',
                         data: {
                             _token: csrfToken, // Include the CSRF token
