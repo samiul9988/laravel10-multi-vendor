@@ -7,6 +7,7 @@ use App\Http\Controllers\backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\AdminController;
 
@@ -47,3 +48,8 @@ Route::resource('brand', BrandController::class);
 /** Admin Vendor Profile route */
 
 Route::resource('vendor-profile', AdminVendorProfileController::class);
+
+/** Porducts route */
+Route::get('products/subcategories', [ProductController::class, 'getSubCategory'])->name('product-SubCategory');
+Route::get('products/childCategories', [ProductController::class, 'getChildCategory'])->name('product-getChildCategory');
+Route::resource('products', ProductController::class);
