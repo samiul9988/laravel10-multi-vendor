@@ -29,35 +29,35 @@
             </div>
         </div>
     </section>
-{{--    @push('scripts')--}}
-{{--        {{ $dataTable->scripts(attributes: ['type' => 'module']) }}--}}
+    @push('scripts')
+        {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
-{{--        <script>--}}
-{{--            $(document).ready(function () {--}}
-{{--                $('body').on('click', '.change-status', function () {--}}
-{{--                    let isChecked = $(this).is(':checked');--}}
-{{--                    let id = $(this).data('id');--}}
-{{--                    let csrfToken = $('meta[name="csrf-token"]').attr('content'); // Extract CSRF token--}}
+        <script>
+            $(document).ready(function () {
+                $('body').on('click', '.change-status', function () {
+                    let isChecked = $(this).is(':checked');
+                    let id = $(this).data('id');
+                    let csrfToken = $('meta[name="csrf-token"]').attr('content'); // Extract CSRF token
 
-{{--                    $.ajax({--}}
-{{--                        url: "{{ route('admin.brand.change-status') }}", // Use the named route--}}
-{{--                        method: 'PUT',--}}
-{{--                        data: {--}}
-{{--                            _token: csrfToken, // Include the CSRF token--}}
-{{--                            status: isChecked,--}}
-{{--                            id: id--}}
-{{--                        },--}}
-{{--                        success: function (data) {--}}
-{{--                            toastr.success(data.message);--}}
-{{--                        },--}}
-{{--                        error: function (xhr, status, error) {--}}
-{{--                            console.log(error);--}}
-{{--                        }--}}
-{{--                    });--}}
-{{--                });--}}
-{{--            });--}}
+                    $.ajax({
+                        url: "{{ route('admin.brand.change-status') }}", // Use the named route
+                        method: 'PUT',
+                        data: {
+                            _token: csrfToken, // Include the CSRF token
+                            status: isChecked,
+                            id: id
+                        },
+                        success: function (data) {
+                            toastr.success(data.message);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
 
 
-{{--        </script>--}}
-{{--    @endpush--}}
+        </script>
+    @endpush
 @endsection()

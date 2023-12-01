@@ -21,7 +21,8 @@ class ProductController extends Controller
      */
     public function index(ProductDataTable $dataTable)
     {
-        return $dataTable->render('admin.product.index');
+        $products = Product::all();
+        return $dataTable->render('admin.product.index',compact('products'));
     }
 
     /**
@@ -49,9 +50,7 @@ class ProductController extends Controller
             'short_description' => ['required', 'max:200'],
             'long_description'  => ['required', 'max:250'],
             'sku'               => ['required'],
-            'is_top'            => ['required'],
-            'is_best'           => ['required'],
-            'is_featured'       => ['required'],
+            'product_type'      => ['required'],
             'seo_title'         => ['required'],
             'seo_description'   => ['required'],
             'status'            => ['required']
@@ -65,9 +64,11 @@ class ProductController extends Controller
         $products->name                 = $request->name;
         $products->slug                 = Str::slug($request->name);
         $products->vendor_id            = Auth::user()->vendor->id;
-        $products->sub_category_id      = $request->category;
-        $products->child_category_id    = $request->sub_category;
+        $products->category_id          = $request->category;
+        $products->sub_category_id      = $request->sub_category;
+        $products->child_category_id    = $request->child_category;
         $products->brand_id             = $request->brand;
+        $products->qty                  = $request->qty;
         $products->short_description    = $request->short_description;
         $products->long_description     = $request->long_description;
         $products->video_link           = $request->video_link;
@@ -76,9 +77,7 @@ class ProductController extends Controller
         $products->offer_price          = $request->offer_price;
         $products->offer_start_date     = $request->offer_start_date;
         $products->offer_end_date       = $request->offer_end_date;
-        $products->is_top               = $request->is_top;
-        $products->is_best              = $request->is_best;
-        $products->is_featured          = $request->is_featured;
+        $products->product_type               = $request->product_type;
         $products->status               = $request->status;
         $products->is_approved          = 1;
         $products->seo_title            = $request->seo_title;
@@ -102,7 +101,12 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $products = Product::findOrFail($id);
+        $subCategories = SubCategory::where('category_id', $products->category_id)->get();
+        $childCategories = ChildCategory::where('sub_category_id', $products->sub_category_id)->get();
+        $categories = Category::all();
+        $brands     = Brand::all();
+        return view('admin.product.edit',compact('categories','brands','products','subCategories','childCategories'));
     }
 
     /**
@@ -110,7 +114,53 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name'              => ['required', 'max:200'],
+            'image'             => ['nullable'],
+            'category'          => ['required'],
+            'brand'             => ['required'],
+            'qty'               => ['required'],
+            'price'             => ['required'],
+            'short_description' => ['required', 'max:200'],
+            'long_description'  => ['required', 'max:250'],
+            'sku'               => ['required'],
+            'product_type'      => ['required'],
+            'seo_title'         => ['required'],
+            'seo_description'   => ['required'],
+            'status'            => ['required']
+        ]);
+
+        $products = Product::findOrFail($id);
+
+        $imagePath = $this->updateImage($request, 'image', 'uploads', $products->thumb_image);
+
+
+        $products->thumb_image          = empty(!$imagePath ? $imagePath : $products->thumb_image);
+        $products->name                 = $request->name;
+        $products->slug                 = Str::slug($request->name);
+        $products->vendor_id            = Auth::user()->vendor->id;
+        $products->category_id          = $request->category;
+        $products->sub_category_id      = $request->sub_category;
+        $products->child_category_id    = $request->child_category;
+        $products->brand_id             = $request->brand;
+        $products->qty                  = $request->qty;
+        $products->short_description    = $request->short_description;
+        $products->long_description     = $request->long_description;
+        $products->video_link           = $request->video_link;
+        $products->sku                  = $request->sku;
+        $products->price                = $request->price;
+        $products->offer_price          = $request->offer_price;
+        $products->offer_start_date     = $request->offer_start_date;
+        $products->offer_end_date       = $request->offer_end_date;
+        $products->product_type               = $request->product_type;
+        $products->status               = $request->status;
+        $products->is_approved          = 1;
+        $products->seo_title            = $request->seo_title;
+        $products->seo_description      = $request->seo_description;
+
+        $products->save();
+
+        return redirect()->route('admin.products.index');
     }
 
     /**
