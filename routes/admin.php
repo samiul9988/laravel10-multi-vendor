@@ -7,8 +7,10 @@ use App\Http\Controllers\backend\ChildCategoryController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\backend\ProductImageGalleryController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Support\Facades\Route;
+use App\Models\ProductImageGallery as ProductImageGallery;
+use Illuminate\Support\Facades\Route as Route;
 use App\Http\Controllers\backend\AdminController;
 
 Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -53,3 +55,4 @@ Route::resource('vendor-profile', AdminVendorProfileController::class);
 Route::get('products/subcategories', [ProductController::class, 'getSubCategory'])->name('product-SubCategory');
 Route::get('products/childCategories', [ProductController::class, 'getChildCategory'])->name('product-getChildCategory');
 Route::resource('products', ProductController::class);
+Route::resource('product-gallery', ProductImageGalleryController::class);

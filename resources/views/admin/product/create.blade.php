@@ -19,7 +19,7 @@
                             <h4>Product Create</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('admin.products.store')}}" method="POST">
+                            <form action="{{route('admin.products.store')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label>Image</label>
