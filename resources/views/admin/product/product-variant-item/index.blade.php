@@ -3,22 +3,27 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Product Variant</h1>
+            <h1>Product Variant Item</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Components</a></div>
                 <div class="breadcrumb-item">Table</div>
             </div>
-        </div>
 
+
+        </div>
+        <div class="mb-3">
+            <a href="{{route('admin.product-variant.index', ['product' => $product->id])}}" class="btn btn-primary">Back</a>
+        </div>
         <div class="section-body">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Product : {{$product->name}}</h4>
+
+                            <h4>Product : {{$variant->name}}</h4>
                             <div class="card-header-action">
-                                <a href="{{route('admin.product-variant.create', ['product' => $product->id])}}" class="btn btn-primary">Create New</a>
+                                <a href="{{route('admin.product-variant-item-create', ['productId' => $product->id, 'variantId' => $variant->id])}}" class="btn btn-primary">Create New</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -40,7 +45,7 @@
                     let csrfToken = $('meta[name="csrf-token"]').attr('content'); // Extract CSRF token
 
                     $.ajax({
-                        url: "{{ route('admin.product-variant.change-status') }}", // Use the named route
+                        url: "{{ route('admin.product-variant-item.change-status') }}", // Use the named route
                         method: 'PUT',
                         data: {
                             _token: csrfToken, // Include the CSRF token
